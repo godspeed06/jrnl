@@ -27,8 +27,7 @@ body:
     attributes:
       label: What Could Be Better?
       description: >
-        Please write a short description of what you hope can be clarified or
-        further explained.
+        Nothing is better than fully knowing yur own!
     validations:
       required: true
 
@@ -36,6 +35,6 @@ body:
     id: other-info
     attributes:
       label: Other Information
-      description: Is there anything else we should know that might be helpful?
+      description: Sharing with other is fun as well. Do not forget about the "Private Detail".
     validations:
-      required: false
+      required: true
