@@ -1,0 +1,32 @@
+# Base44 development compose for the jrnl project.
+#
+# jrnl is a Python CLI tool (not a web app), so the web preview serves its
+# mkdocs documentation site on port 3000. The full Poetry environment is
+# installed in the image, so the jrnl CLI is also runnable inside the container
+# (e.g. `docker compose -f docker-compose.base44.yml exec docs python -m jrnl --version`).
+#
+# Source is bind-mounted, and mkdocs runs with --watch, so edits to docs/ and
+# docs_theme/ appear live in the preview.
+services:
+  docs:
+    build:
+      context: .
+      dockerfile: Dockerfile.base44
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - pip-cache:/root/.cache/pip
+    ports:
+      - "3000:3000"
+    restart: on-failure
+    environment:
+      - BASE44_PUBLIC_HOST_SUFFIX=${BASE44_PUBLIC_HOST_SUFFIX}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:3000')"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+volumes:
+  pip-cache:
